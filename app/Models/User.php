@@ -3,14 +3,38 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\Role;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens, HasRoles;
+
+    protected static function booted()
+    {
+        static::creating(function (self $user) {
+            
+            if (!Str::contains(implode(" ", $_SERVER['argv'] ?? []), 'make:filament-user')) {
+                $user->assignRole(Role::CUSTOMER->value);
+            }
+        });
+    }
+
+    public function canAccessPanel(\Filament\Panel $panel): bool
+    {
+        if ($panel->getId() === 'admin') {
+            return $this->hasRole(Role::ADMIN->value);
+        }
+        return false;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -45,4 +69,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
 }
