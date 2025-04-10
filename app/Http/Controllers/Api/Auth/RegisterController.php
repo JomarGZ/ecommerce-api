@@ -22,14 +22,8 @@ class RegisterController extends ApiController
         ]);
 
         $device = substr($request->header('User-Agent') ?? 'Uknown', 0, 255);
-        return $this->success([
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                ],
-                'access_token' => $user->createToken($device)->plainTextToken
-            ],
+        return $this->success(
+                ['access_token' => $user->createToken($device)->plainTextToken],
             'User created successfully',
             Response::HTTP_CREATED
         );

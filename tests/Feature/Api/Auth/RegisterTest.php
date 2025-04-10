@@ -1,17 +1,18 @@
 <?php
 
-namespace Tests\Feature\Api\Auth\RegisterController;
+namespace Tests\Feature\Api\Auth;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
-class StoreTest extends TestCase
+class RegisterTest extends TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
     
     private function submitUserData(array $override = []): TestResponse
     {
