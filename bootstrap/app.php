@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -28,12 +29,15 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*')) {
                 if ($e instanceof NotFoundHttpException) {
                     return response()->json([
-                        'success' => false,
-                        'message' => 'Endpoint not found',
-                        'errors' => [
-                            'url' => ['The request API endpoint does not exist']
-                        ]
+                        'errors' => 'Endpoint not found',
+                        'status' => Response::HTTP_NOT_FOUND
                         ], Response::HTTP_NOT_FOUND);
+                }
+                if ($e instanceof MethodNotAllowedHttpException) {
+                    return response()->json([
+                        'errors' => 'Method not allowed',
+                        'status' => Response::HTTP_METHOD_NOT_ALLOWED
+                        ], Response::HTTP_METHOD_NOT_ALLOWED);
                 }
             }
         });
