@@ -23,7 +23,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-final class User extends Authenticatable implements MustVerifyEmail, FilamentUser
+final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     use HasApiTokens;
 
@@ -53,6 +53,11 @@ final class User extends Authenticatable implements MustVerifyEmail, FilamentUse
         'remember_token',
     ];
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return (bool) $this->is_admin;
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -64,10 +69,5 @@ final class User extends Authenticatable implements MustVerifyEmail, FilamentUse
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return (bool) $this->is_admin;
     }
 }
