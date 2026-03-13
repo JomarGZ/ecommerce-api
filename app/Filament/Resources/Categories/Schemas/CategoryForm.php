@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Categories\Schemas;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
-class CategoryForm
+final class CategoryForm
 {
     public static function configure(Schema $schema): Schema
     {
@@ -18,7 +20,7 @@ class CategoryForm
                     ->maxLength(100),
                 TextInput::make('slug')
                     ->readOnly()
-                    ->helperText('This slug is automatically generated from the name.')
+                    ->helperText('This slug is automatically generated from the name.'),
             ]);
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,10 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brands', function (Blueprint $table): void {
+        Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique('brand_slug_index');
+            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
+            $table->string('sku')->unique('product_variant_sku_index');
+            $table->decimal('price', 10, 2);
+            $table->unsignedBigInteger('stock')->default(0);
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('product_variants');
     }
 };

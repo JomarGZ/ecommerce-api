@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Brands;
 
 use App\Filament\Resources\Brands\Pages\CreateBrand;
@@ -16,7 +18,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class BrandResource extends Resource
+final class BrandResource extends Resource
 {
     protected static ?string $model = Brand::class;
 

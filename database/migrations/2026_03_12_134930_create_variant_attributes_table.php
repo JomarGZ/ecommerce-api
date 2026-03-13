@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+use App\Models\ProductVariant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,10 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brands', function (Blueprint $table): void {
+        Schema::create('variant_attributes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique('brand_slug_index');
+            $table->foreignIdFor(ProductVariant::class)->constrained()->cascadeOnDelete();
+            $table->string('attribute_name');
+            $table->string('attribute_value');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('variant_attributes');
     }
 };

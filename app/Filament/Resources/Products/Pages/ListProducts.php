@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources\Brands\Pages;
+namespace App\Filament\Resources\Products\Pages;
 
-use App\Filament\Resources\Brands\BrandResource;
+use App\Filament\Resources\Products\ProductResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
-final class ListBrands extends ListRecords
+final class ListProducts extends ListRecords
 {
-    protected static string $resource = BrandResource::class;
+    protected static string $resource = ProductResource::class;
 
     protected function getHeaderActions(): array
     {

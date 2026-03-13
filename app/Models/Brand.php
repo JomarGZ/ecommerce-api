@@ -1,22 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use Database\Factories\BrandFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Brand extends Model
+final class Brand extends Model
 {
-    /** @use HasFactory<\Database\Factories\BrandFactory> */
+    /** @use HasFactory<BrandFactory> */
     use HasFactory;
 
     use HasSlug;
 
     protected $fillable = [
         'name',
-        'slug'
+        'slug',
     ];
 
     public function getSlugOptions(): SlugOptions
@@ -24,5 +28,13 @@ class Brand extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
+    }
+
+    /**
+     * @return HasMany<Product, $this>
+     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 }
